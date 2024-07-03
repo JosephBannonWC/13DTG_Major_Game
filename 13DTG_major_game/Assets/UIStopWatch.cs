@@ -8,12 +8,11 @@ public class UIStopWatch : MonoBehaviour
 {
     private bool _timerActive;
     private float _currentTime;
-    [SerializeField] private TMP_Text _text; 
+    private float PBtime;
+
+[SerializeField] private TMP_Text _text;
     // Start is called before the first frame update
-    void Start()
-    {
-        _currentTime = 0; 
-    }
+    void Start() => _currentTime = 0;
 
     // Update is called once per frame
     void Update()
@@ -22,6 +21,7 @@ public class UIStopWatch : MonoBehaviour
         {
             _currentTime = _currentTime + Time.deltaTime;
         }
+        TimeSpan time = TimeSpan.FromSeconds(_currentTime);
         _text.text = _currentTime.ToString();
     }
     public void StartTimer()
@@ -31,14 +31,11 @@ public class UIStopWatch : MonoBehaviour
     public void StopTimer()
     {
         _timerActive = false;
-        Invoke("delay", 3);
         _currentTime = 0;
 
     }
-    public void CurrentTime()
+    public float CurrentTime()
     {
-        _currentTime;
-
+        return _currentTime;
     }
-
 }
