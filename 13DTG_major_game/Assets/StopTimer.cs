@@ -9,7 +9,7 @@ public class StopTimer : MonoBehaviour
     public UIStopWatch stop;
     private float _PBTime;
 
-    [SerializeField] private TMP_Text __text;
+    [SerializeField] private TMP_Text _text;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,16 +19,17 @@ public class StopTimer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        __text.text = _PBTime.ToString();
+        TimeSpan time = TimeSpan.FromSeconds(_PBTime);
+        _text.text = time.ToString(@"mm\:ss\:fff");
     }
+
     void OnTriggerEnter(Collider col)
     {
         if (col.gameObject.CompareTag("Player"))
         {
             _PBTime = stop.CurrentTime();
-
             stop.StopTimer();
-
+            stop.ResetTimer();
         }
     }
 }

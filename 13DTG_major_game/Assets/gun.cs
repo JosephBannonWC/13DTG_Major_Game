@@ -34,6 +34,8 @@ public class gun : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Shoot();
+            print("shoot");
+            Debug.Log("shoot");
         }
         if (Input.GetMouseButtonDown(1))
         {
@@ -47,6 +49,7 @@ public class gun : MonoBehaviour
         MuzzleFlash.Play();
 
         RaycastHit hit;
+        Debug.Log("hit");
         if (Physics.Raycast(PlayerCam.transform.position, PlayerCam.transform.forward, out hit, range))
         {
             Debug.Log(hit.transform.name);
@@ -65,6 +68,7 @@ public class gun : MonoBehaviour
 
     void Reload()
     {
+        Debug.Log("reloading");
         if (!isReloading)
         {
             isReloading = true;
@@ -73,7 +77,6 @@ public class gun : MonoBehaviour
             // Play reload sound
             reloadSound.Play();
 
-            // Delay for the duration of the reload animation
             float reloadDuration = gunAnimator.GetCurrentAnimatorClipInfo(0)[0].clip.length;
             StartCoroutine(CompleteReload(reloadDuration));
         }

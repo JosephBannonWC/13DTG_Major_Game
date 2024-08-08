@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class spinner : MonoBehaviour
 {
+    [Range(-2f, 2f)] public float spinspeed = -0.1f;
     // Start is called before the first frame update
     void Start()
     {
@@ -13,6 +14,6 @@ public class spinner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Rotate(0, -10f, 0, Space.Self);
+        transform.Rotate(0, spinspeed, 0);
     }
 }
