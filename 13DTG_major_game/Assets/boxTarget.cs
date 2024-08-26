@@ -1,50 +1,48 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class boxTarget : MonoBehaviour
-
-
 {
-    
-    // Start is called before the first frame update
-   
-    public GameObject projectile;
-    [Range(0f, 100f)] public float Seconds = 10;
-    public Transform TransformTarget;
+    public GameObject targetPrefab;
+    public Transform spawnArea; 
+    [Range(0f, 100f)] public float spawnInterval = 2f;
+    private int targetsShot = 0;
+    private int maxTargets = 30;
+    private GameObject currentTarget;
 
-    private Vector3 RandomVector(float min, float max)
-    {
-        var x = Random.Range(min, max);
-        var y = Random.Range(min, max);
-        var z = Random.Range(min, max);
-        return new Vector3(x, y, z);
-    }
     void Start()
     {
-       
-        StartCoroutine(wait());
-
-        
+        StartCoroutine(SpawnTargets());
     }
-    IEnumerator wait()
-    {
-        while (true)
-        {
-        var position = new Vector3(Random.Range(-10.0f, 10.0f), Random.Range(0, 10.0f), 0);
-        GameObject clone = Instantiate(projectile, position, Quaternion.identity);
-        yield return new WaitForSeconds(Seconds);
-        Destroy(clone, 0.5f);
 
+    IEnumerator SpawnTargets()
+    {
+        while (targetsShot < maxTargets)
+        {
+            if (currentTarget == null)
+            {
+                Vector3 position = new Vector3(
+                    Random.Range(spawnArea.position.x - 10f, spawnArea.position.x + 10f),
+                    Random.Range(spawnArea.position.y, spawnArea.position.y + 0.01f),
+                    Random.Range(spawnArea.position.z, spawnArea.position.z + 10f)
+                );
+
+                currentTarget = Instantiate(targetPrefab, position, Quaternion.identity);
+                currentTarget.GetComponent<Target>().onDestroyed += OnTargetDestroyed;
+            }
+
+            yield return null;
         }
 
-
+        Debug.Log("all targets shot");
     }
-    // Update is called once per frame
-    void Update()
+
+    void OnTargetDestroyed()
     {
-        
+        targetsShot++;
+        currentTarget.GetComponent<Target>().onDestroyed -= OnTargetDestroyed;
+        currentTarget = null;
     }
 }

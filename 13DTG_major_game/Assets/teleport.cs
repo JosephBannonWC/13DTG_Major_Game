@@ -19,7 +19,7 @@ public class teleport : MonoBehaviour
     {
         if (col.gameObject.CompareTag("Player"))
         {
-            col.transform.position = new Vector3(10.0f, 3.0f, 3.0f);
+            col.transform.position = new Vector3(-16.0f, 2.5f, -58.0f);
         }
     }
 }

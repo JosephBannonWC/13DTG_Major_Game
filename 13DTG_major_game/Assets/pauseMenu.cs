@@ -13,15 +13,17 @@ public class pauseMenu : MonoBehaviour
     public GameObject quitButton;
     public GameObject settingsButton;
     public GameObject backButton;
+    public GameObject resetButton;
+    public GameObject volume;
+    public Transform playerHome;
 
     // Start is called before the first frame update
     private void Start()
     {
-        // Ensure the pause menu is not active when the game starts
         pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
 
-        // Ensure the cursor is locked and hidden at the start
+    
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -48,38 +50,52 @@ public class pauseMenu : MonoBehaviour
         Time.timeScale = 1f;
         isPaused = false;
 
-        // Lock and hide the cursor when resuming the game
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
+    public void Reset()
+    {
+        GameObject player = GameObject.FindWithTag("Player");
+        player.transform.position = playerHome.position;
+        player.transform.rotation = playerHome.rotation;
+        Resume();
+
+    }
     public void Pause()
     {
         pauseMenuUI.SetActive(true);
         backButton.SetActive(false);
+        volume.SetActive(false);
         Time.timeScale = 0f;
         isPaused = true;
-
-        // Unlock and show the cursor when pausing the game
+        resumeButton.SetActive(true);
+        resetButton.SetActive(true);
+        quitButton.SetActive(true);
+        settingsButton.SetActive(true);
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
     public void settings()
     {
         resumeButton.SetActive(false);
+        resetButton.SetActive(false);
         quitButton.SetActive(false);
         settingsButton.SetActive(false);
         backButton.SetActive(true);
+        volume.SetActive(true);
     }
     public void back()
     {
         resumeButton.SetActive(true);
+        resetButton.SetActive(true);
         quitButton.SetActive(true);
         settingsButton.SetActive(true);
         backButton.SetActive(false);
+        volume.SetActive(false); 
     }
     public void Quit()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
 }

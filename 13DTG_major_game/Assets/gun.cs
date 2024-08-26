@@ -59,6 +59,36 @@ public class gun : MonoBehaviour
             {
                 target.TakeDamage(damage);
             }
+
+            target1 target1 = hit.transform.GetComponent<target1>();
+            if (target1 != null)
+            {
+                target1.TakeDamage(damage);
+            }
+
+            target2 target2 = hit.transform.GetComponent<target2>();
+            if (target2 != null)
+            {
+                target2.TakeDamage(damage);
+            }
+
+            target3 target3 = hit.transform.GetComponent<target3>();
+            if (target3 != null)
+            {
+                target3.TakeDamage(damage);
+            }
+
+            target4 target4 = hit.transform.GetComponent<target4>();
+            if (target4 != null)
+            {
+                target4.TakeDamage(damage);
+            }
+
+            target5 target5 = hit.transform.GetComponent<target5>();
+            if (target5 != null)
+            {
+                target5.TakeDamage(damage);
+            }
         }
 
 
@@ -72,7 +102,7 @@ public class gun : MonoBehaviour
         if (!isReloading)
         {
             isReloading = true;
-            gunAnimator.SetTrigger("Reload"); // Trigger reload animation
+            gunAnimator.SetTrigger("Reload"); 
 
             // Play reload sound
             reloadSound.Play();

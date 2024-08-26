@@ -19,7 +19,7 @@ public class Teleport_gridshot : MonoBehaviour
     {
         if (col.gameObject.CompareTag("Player"))
         {
-            col.transform.position = new Vector3(-10.0f, 2f, -3.0f);
+            col.transform.position = new Vector3(-90.2095871f, 3.23681736f, -53.5966911f);
         }
     }
 }

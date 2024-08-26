@@ -44,10 +44,7 @@ public class crouch : MonoBehaviour
             PlayerHeight.height = normalHeight;
             leftleg.SetActive(false);
             rightleg.SetActive(false);
-            while (!_groundedPlayer)
-            {
-                firstPersonController.MoveSpeed = 20f;
-            }
+            
         }
     }
 }
