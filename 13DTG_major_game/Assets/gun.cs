@@ -6,54 +6,64 @@ using UnityEngine.InputSystem.Controls;
 
 public class gun : MonoBehaviour
 {
-    public Camera cam;
-    public float damage = 10f;
-    public float range = 100f;
-    public ParticleSystem MuzzleFlash;
-    public Camera PlayerCam;
-    public AudioSource gunshotSound;
-    public Animator gunAnimator;
-    public AudioSource reloadSound;
-    public float recoilForce = 0.1f;
+    public Camera cam; // Reference to the camera used for aiming
+    public float damage = 10f; // Damage dealt by the gun
+    public float range = 100f; // Maximum range of the gun
+    public ParticleSystem MuzzleFlash; // Particle system for the gun's muzzle flash
+    public Camera PlayerCam; // Camera used for raycasting
+    public AudioSource gunshotSound; // Audio source for the gunshot sound
+    public Animator gunAnimator; // Animator for the gun's reload animation
+    public AudioSource reloadSound; // Audio source for the reload sound
+    public float recoilForce = 0.1f; // Force applied for recoil (not used in this script)
 
-    private bool isReloading = false;
+    private bool isReloading = false; // Flag to check if the gun is currently reloading
 
     private void Start()
     {
+        // Initialize audio sources by getting components attached to the gun
         AudioSource[] audioSources = GetComponents<AudioSource>();
-        gunshotSound = audioSources[0]; 
-        reloadSound = audioSources[1]; 
+        gunshotSound = audioSources[0];
+        reloadSound = audioSources[1];
     }
 
     void Update()
     {
+        // Reload the gun when the "R" key is pressed
         if (Input.GetKeyDown(KeyCode.R))
         {
             Reload();
         }
+
+        // Shoot when the left mouse button is pressed
         if (Input.GetMouseButtonDown(0))
         {
             Shoot();
             print("shoot");
             Debug.Log("shoot");
         }
+
+        // Adjust the field of view when the right mouse button is pressed
         if (Input.GetMouseButtonDown(1))
         {
             Debug.Log("Pressed right click.");
             cam.fieldOfView = 50.0f;
         }
-
     }
+
     public void Shoot()
     {
+        // Play muzzle flash effect
         MuzzleFlash.Play();
 
         RaycastHit hit;
         Debug.Log("hit");
+
+        // Perform a raycast from the player's camera forward direction
         if (Physics.Raycast(PlayerCam.transform.position, PlayerCam.transform.forward, out hit, range))
         {
             Debug.Log(hit.transform.name);
 
+            // Check and apply damage to different types of targets
             Target target = hit.transform.GetComponent<Target>();
             if (target != null)
             {
@@ -91,9 +101,8 @@ public class gun : MonoBehaviour
             }
         }
 
-
+        // Play gunshot sound
         gunshotSound.Play();
-
     }
 
     void Reload()
@@ -102,11 +111,11 @@ public class gun : MonoBehaviour
         if (!isReloading)
         {
             isReloading = true;
-            gunAnimator.SetTrigger("Reload"); 
+            gunAnimator.SetTrigger("Reload"); // Trigger reload animation
 
-            // Play reload sound
-            reloadSound.Play();
+            reloadSound.Play(); // Play reload sound
 
+            // Get the duration of the reload animation and start coroutine to handle reload completion
             float reloadDuration = gunAnimator.GetCurrentAnimatorClipInfo(0)[0].clip.length;
             StartCoroutine(CompleteReload(reloadDuration));
         }
@@ -114,7 +123,8 @@ public class gun : MonoBehaviour
 
     IEnumerator CompleteReload(float duration)
     {
+        // Wait for the reload duration to complete
         yield return new WaitForSeconds(duration);
-        isReloading = false;
+        isReloading = false; // Reset reload flag
     }
 }
